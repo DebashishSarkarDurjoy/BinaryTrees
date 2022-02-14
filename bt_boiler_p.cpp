@@ -30,6 +30,34 @@ Node* buildTree() {
     return node;
 }
 
+Node* levelOrderBuild() {
+    queue<Node*> q;
+    int i;
+
+    cin >> i;
+    Node* root = new Node(i);
+    q.push(root);
+
+    while (!q.empty()) {
+        Node* front = q.front();
+        q.pop();
+
+        int c1, c2;
+        cin >> c1 >> c2;
+
+        if (c1 != -1) {
+            front->left = new Node(c1);
+            q.push(front->left);
+        }
+        if (c2 != -1) {
+            front->right = new Node(c2);
+            q.push(front->right);
+        }
+
+    }
+    return root;
+}
+
 void levelOrderPrint(Node* root) {
     queue<Node*> q;
 
@@ -42,10 +70,12 @@ void levelOrderPrint(Node* root) {
 
         if (f == NULL) {
             cout << endl;
-            if (!q.empty()) {
+            if (q.empty()) return;
+            else {
                 q.push(NULL);
                 continue;
             }
+
         }
 
         cout << f->data << " ";
@@ -62,9 +92,9 @@ void levelOrderPrint(Node* root) {
 
 int main(void) {
 
-    Node* root = buildTree();
+    Node* root = levelOrderBuild();
 
-    levelOrderPrint2(root);
+    levelOrderPrint(root);
 
     return 0;
 }
