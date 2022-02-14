@@ -89,12 +89,41 @@ void levelOrderPrint(Node* root) {
     }
 }
 
+class HDPair {
+public:
+    int diameter;
+    int height;
+};
+
+HDPair optDiameter(Node* root) {
+    HDPair p;
+    if (root == NULL) {
+        p.diameter = p.height = 0;
+        return p;
+    }
+
+    HDPair Left = optDiameter(root->left);
+    HDPair Right = optDiameter(root->right);
+
+    int D1 = Left.height + Right.height;
+    int D2 = Left.diameter;
+    int D3 = Right.diameter;
+
+    p.diameter = max(D1, max(D2, D3));
+    p.height = max(Left.height, Right.height) + 1;
+
+    return p;
+}
+
 
 int main(void) {
 
     Node* root = levelOrderBuild();
 
     levelOrderPrint(root);
+
+    HDPair p = optDiameter(root);
+    cout << "optDiameter and height: " << p.diameter << ", " << p.height << endl;
 
     return 0;
 }
