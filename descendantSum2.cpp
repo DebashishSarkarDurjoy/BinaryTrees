@@ -98,6 +98,20 @@ int totalSum(Node* root) {
     return temp + sum;
 }
 
+int descendantSum(Node* root) {
+    if (root == NULL) {
+        return 0;
+    }
+    if (root->left == NULL && root->right == NULL) {
+        return root->data;
+    }
+
+    int temp = root->data;
+    root->data = descendantSum(root->left) + descendantSum(root->right);
+
+    return temp + root->data;
+}
+
 
 int main(void) {
 
@@ -108,6 +122,9 @@ int main(void) {
     // HDPair p = optDiameter(root);
     int sum = totalSum(root);
     cout << "Total Sum: " << sum << endl;
+
+    descendantSum(root);
+    levelOrderPrint(root);
     // cout << "optDiameter and height: " << p.diameter << ", " << p.height << endl;
     return 0;
 }
