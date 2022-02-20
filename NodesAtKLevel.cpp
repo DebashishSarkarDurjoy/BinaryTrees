@@ -105,66 +105,13 @@ void NodesAtKLevel(Node* root, int k) {
 
 }
 
-int nodesAtK(Node* root, Node* target, int k) {
-    //base case
-    if (root == NULL) {
-        return -1;
-    }
-
-    //reached the target node
-    if (root == target) {
-        NodesAtKLevel(root, k);
-        return 0;
-    }
-
-    //other case
-    int DL = nodesAtK(root->left, target, k);
-    if (DL != -1) {
-        // 2 cases
-        // print the current node
-        if (DL + 1 == k) {
-            cout << root->data << " ";
-        }
-        else {
-            NodesAtKLevel(root->right, k-2-DL);
-        }
-        return 1 + DL;
-    }
-
-    int DR = nodesAtK(root->right, target, k);
-    if (DR != -1) {
-        // 2 cases
-        // print the current node
-        if (DR + 1 == k) {
-            cout << root->data << " ";
-        }
-        else {
-            NodesAtKLevel(root->left, k-2-DR);
-        }
-        return 1 + DR;
-    }
-
-    return -1;
-}
-
-
-
 int main(void) {
 
-    Node* root = new Node(1);
-	root->left = new Node(2);
-	root->right = new Node(3);
-	root->left->left = new Node(4);
-	root->left->right = new Node(5);
-	root->right->right = new Node(6);
-	root->left->right->left = new Node(7);
-	root->left->right->right = new Node(8);
-	root->left->right->right->left = new Node(9);
-	root->left->right->right->right = new Node(10);
+    Node* root = levelOrderBuild();
 
     levelOrderPrint(root);
 
-    nodesAtK(root, root->left->right, 2);
+    NodesAtKLevel(root, 1);
     cout << endl;
 
     return 0;
