@@ -97,12 +97,32 @@ HDpair optDiameter(leaf* node) {
     return Pair;
 }
 
+pair<int, bool> isHeightBalanced(leaf* node) {
+    // base case
+    if (node == NULL) {
+        pair<int, bool> p;
+        p.first = 0;
+        p.second = true;
+        return p;
+    }
+
+    // recursive case
+    pair<int, bool> Left = isHeightBalanced(node->left);
+    pair<int, bool> Right = isHeightBalanced(node->right);
+    int height = max(Left.first, Right.first) + 1;
+    if (abs(Left.first - Right.first) <= 1 && Left.second && Right.second) {
+        return make_pair(height, true);
+    }
+    return make_pair(height, false);
+}
+
 int main(void) {
     leaf* tree = buildTree();
     showTree(tree);
     cout << "Height: " << height(tree) << endl;
     cout << "Diameter: " << diameter(tree) << endl;
     cout << "Optimised diameter: " << optDiameter(tree).diameter << endl;
+    cout << "Is height balanced? : " << isHeightBalanced(tree).second << endl;
 
     return 0;
 }
