@@ -116,12 +116,35 @@ pair<int, bool> isHeightBalanced(leaf* node) {
     return make_pair(height, false);
 }
 
+pair<int, int> optDiameter2(leaf* node) {
+    pair<int, int> p;
+    // base case
+    if (node == NULL) {
+        p.first = 0; // height
+        p.second = 0; // diameter
+        return p;
+    }
+    // recursive case
+    pair<int, int> Left = optDiameter2(node->left);
+    pair<int, int> Right = optDiameter2(node->right);
+
+    int D1 = Left.first + Right.first;
+    int D2 = Left.second;
+    int D3 = Right.second;
+
+    p.first = max(Left.first, Right.first) + 1;
+    p.second = max(D1, max(D2, D3));
+
+    return p;
+}
+
 int main(void) {
     leaf* tree = buildTree();
     showTree(tree);
     cout << "Height: " << height(tree) << endl;
     cout << "Diameter: " << diameter(tree) << endl;
     cout << "Optimised diameter: " << optDiameter(tree).diameter << endl;
+    cout << "Optimised diameter 2: " << optDiameter2(tree).second << endl;
     cout << "Is height balanced? : " << isHeightBalanced(tree).second << endl;
 
     return 0;
