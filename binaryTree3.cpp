@@ -55,10 +55,25 @@ int height(leaf* node) {
     return 1 + max(h_left, h_right);
 }
 
+int diameter(leaf* node) {
+    // base case
+    if (node == NULL) {
+        return 0;
+    }
+
+    // recursive case
+    int d1 = height(node->left) + height(node->right);
+    int d2 = diameter(node->left);
+    int d3 = diameter(node->right);
+
+    return max(d1, max(d2, d3));
+}
+
 int main(void) {
     leaf* tree = buildTree();
     showTree(tree);
     cout << "Height: " << height(tree) << endl;
+    cout << "Diameter: " << diameter(tree) << endl;
 
     return 0;
 }
