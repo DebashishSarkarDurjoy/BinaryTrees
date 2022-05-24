@@ -69,11 +69,40 @@ int diameter(leaf* node) {
     return max(d1, max(d2, d3));
 }
 
+class HDpair {
+public:
+    int height;
+    int diameter;
+};
+
+HDpair optDiameter(leaf* node) {
+    HDpair Pair;
+    // base case
+    if (node == NULL) {
+        Pair.height = Pair.diameter = 0;
+        return Pair;
+    }
+
+    // recursive case
+    HDpair Left = optDiameter(node->left);
+    HDpair Right = optDiameter(node->right);
+
+    int d1 = Left.diameter;
+    int d2 = Right.diameter;
+    int d3 = Left.height + Right.height;
+
+    Pair.height = max(Left.height, Right.height) + 1;
+    Pair.diameter = max(Pair.height, max(d1, d2));
+
+    return Pair;
+}
+
 int main(void) {
     leaf* tree = buildTree();
     showTree(tree);
     cout << "Height: " << height(tree) << endl;
     cout << "Diameter: " << diameter(tree) << endl;
+    cout << "Optimised diameter: " << optDiameter(tree).diameter << endl;
 
     return 0;
 }
