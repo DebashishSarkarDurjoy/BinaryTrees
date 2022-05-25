@@ -29,9 +29,19 @@ leaf* buildTree() {
     return node;
 }
 
+void showTree(leaf* node) {
+    if (node == NULL) return;
+
+    showTree(node->left);
+    cout << node->data << " ";
+    showTree(node->right);
+
+    return ;
+}
+
 int main(void) {
     leaf* root = buildTree();
-    
+    showTree(root);
 
     return 0;
 }
