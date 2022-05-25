@@ -39,9 +39,41 @@ void showTree(leaf* node) {
     return ;
 }
 
+int height(leaf* node) {
+    if (node == NULL) return 0;
+
+    int h1 = height(node->left);
+    int h2 = height(node->right);
+
+    return max(h1, h2) + 1;
+}
+
+pair<int, int> optDiameter(leaf* node) {
+    pair<int, int> p;
+    if (node == NULL) {
+        p.first = 0;
+        p.second = 0;
+        return p;
+    }
+
+    pair<int, int> Left = optDiameter(node->left);
+    pair<int, int> Right = optDiameter(node->right);
+
+    int D1 = Left.first + Right.first;
+    int D2 = Left.second;
+    int D3 = Right.second;
+
+    p.first = max(Left.first, Right.first) + 1;
+    p.second = max(D1, max(D2, D3));
+
+    return p;
+}
+
 int main(void) {
     leaf* root = buildTree();
     showTree(root);
+    cout << "Height: " << height(root) << endl;
+    cout << "Diameter: " << optDiameter(root).second << endl;
 
     return 0;
 }
