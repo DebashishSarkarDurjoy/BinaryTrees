@@ -69,11 +69,34 @@ pair<int, int> optDiameter(leaf* node) {
     return p;
 }
 
+pair<int, bool> isHeightBalanced(leaf* node) {
+    pair<int, bool> p;
+    if (node == NULL) {
+        p.first = 0;
+        p.second = true;
+        return p;
+    }
+
+    pair<int, bool> Left = isHeightBalanced(node->left);
+    pair<int, bool> Right = isHeightBalanced(node->right);
+
+    if (abs(Left.first - Right.first) <= 1 && Left.second && Right.second) {
+        p.first = max(Left.first, Right.first) + 1;
+        p.second = true;
+        return p;
+    }
+    p.first = max(Left.first, Right.first) + 1;
+    p.second = false;
+
+    return p;
+}
+
 int main(void) {
     leaf* root = buildTree();
     showTree(root);
     cout << "Height: " << height(root) << endl;
     cout << "Diameter: " << optDiameter(root).second << endl;
+    cout << "is height balanced? : " << isHeightBalanced(root).second << endl;
 
     return 0;
 }
