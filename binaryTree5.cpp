@@ -103,6 +103,27 @@ void levelOrderPrint(leaf* node) {
     return ;
 }
 
+pair<int, bool> isHeightBalanced(leaf* node) {
+    pair<int, bool> p;
+    if (node == NULL) {
+        p.first = 0;
+        p.second = true;
+        return p;
+    }
+
+    pair<int, bool> Left = isHeightBalanced(node->left);
+    pair<int, bool> Right = isHeightBalanced(node->right);
+
+    p.first = max(Left.first, Right.first) + 1;
+    if (abs(Left.first - Right.first) <= 1 && Left.second && Right.second) {
+        p.second = true;
+        return p;
+    }
+
+    p.second = false;
+    return p;
+}
+
 int main(void) {
     leaf* root = new leaf(1);
 	root->left = new leaf(2);
@@ -120,6 +141,7 @@ int main(void) {
     cout << "\n" << "Height: " << height(root) << endl;
     cout << "Optimised Diameter: " << optDiameter(root).second << endl;
     levelOrderPrint(root);
+    cout << "\n" << "Is height balanced: " << isHeightBalanced(root).second << endl;
 
     return 0;
 }
