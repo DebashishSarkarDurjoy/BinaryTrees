@@ -124,6 +124,24 @@ pair<int, bool> isHeightBalanced(leaf* node) {
     return p;
 }
 
+pair<int, int> maxSubSum(leaf* node) {
+    pair<int, int> p;
+    if (node == NULL) {
+        p.first = 0;
+        p.second = 0;
+        return p;
+    }
+
+    pair<int, int> Left = maxSubSum(node->left);
+    pair<int, int> Right = maxSubSum(node->right);
+
+    p.first = node->data + Left.second + Right.second;
+    p.second = max(Left.first, Left.second) + max(Right.first, Right.second);
+    
+    return p;
+}
+
+
 int main(void) {
     leaf* root = new leaf(1);
 	root->left = new leaf(2);
@@ -132,9 +150,9 @@ int main(void) {
 	root->left->right = new leaf(5);
 	root->right->right = new leaf(6);
 	root->left->right->left = new leaf(7);
-	root->left->right->right = new leaf(8);
-	root->left->right->right->left = new leaf(9);
-	root->left->right->right->right = new leaf(10);
+	// root->left->right->right = new leaf(8);
+	// root->left->right->right->left = new leaf(9);
+	// root->left->right->right->right = new leaf(10);
 
 
     showTree(root);
@@ -142,6 +160,11 @@ int main(void) {
     cout << "Optimised Diameter: " << optDiameter(root).second << endl;
     levelOrderPrint(root);
     cout << "\n" << "Is height balanced: " << isHeightBalanced(root).second << endl;
+
+    pair<int, int> result = maxSubSum(root);
+    cout << "Max subset sum: " << max(result.first , result.second) << endl;
+
+
 
     return 0;
 }
