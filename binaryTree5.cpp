@@ -48,12 +48,33 @@ int height(leaf* node) {
 }
 
 // optimised diameter using pair
-pair<int, int> optDiameter()
+pair<int, int> optDiameter(leaf* node) {
+    pair<int, int> p;
+    if (node == NULL) {
+        p.first = 0; // height
+        p.second = 0; // diameter
+        return p;
+    }
+
+    pair<int, int> Left = optDiameter(node->left);
+    pair<int, int> Right = optDiameter(node->right);
+
+    p.first = max(Left.first, Right.first) + 1;
+
+    int D1 = Left.first + Right.first;
+    int D2 = Left.second;
+    int D3 = Right.second;
+
+    p.second = max(D1, max(D2, D3));
+
+    return p;
+}
 
 int main(void) {
     leaf* root = buildTree();
     showTree(root);
     cout << "\n" << "Height: " << height(root) << endl;
+    cout << "Optimised Diameter: " << optDiameter(root).second << endl;
 
     return 0;
 }
