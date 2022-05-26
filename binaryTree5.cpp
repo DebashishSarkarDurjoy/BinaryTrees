@@ -1,4 +1,5 @@
 #include <iostream>
+#include <queue>
 using namespace std;
 
 class leaf {
@@ -70,11 +71,55 @@ pair<int, int> optDiameter(leaf* node) {
     return p;
 }
 
+void levelOrderPrint(leaf* node) {
+    queue<leaf*> q;
+    q.push(node);
+    q.push(NULL);
+
+    while(!q.empty()) {
+        leaf* front = q.front();
+
+        if (front == NULL) {
+            cout << endl;
+            q.pop();
+
+            if (!q.empty()) q.push(NULL);
+        }
+
+        else {
+            q.pop();
+
+            cout << front->data << " ";
+
+            if (front->left != NULL) {
+                q.push(front->left);
+            }
+            if (front->right != NULL) {
+                q.push(front->right);
+            }
+        }
+    }
+
+    return ;
+}
+
 int main(void) {
-    leaf* root = buildTree();
+    leaf* root = new leaf(1);
+	root->left = new leaf(2);
+	root->right = new leaf(3);
+	root->left->left = new leaf(4);
+	root->left->right = new leaf(5);
+	root->right->right = new leaf(6);
+	root->left->right->left = new leaf(7);
+	root->left->right->right = new leaf(8);
+	root->left->right->right->left = new leaf(9);
+	root->left->right->right->right = new leaf(10);
+
+
     showTree(root);
     cout << "\n" << "Height: " << height(root) << endl;
     cout << "Optimised Diameter: " << optDiameter(root).second << endl;
+    levelOrderPrint(root);
 
     return 0;
 }
