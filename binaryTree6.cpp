@@ -98,6 +98,23 @@ pair<int, int> diameter (leaf* node) {
     return current;
 }
 
+pair<int, bool> isHeightBalanced(leaf* node) {
+    if (node == NULL) {
+        return make_pair(0, true);
+    }
+
+    pair<int, bool> leftPair = isHeightBalanced(node->left);
+    pair<int, bool> rightPair = isHeightBalanced(node->right);
+
+    int currentHeight = max(leftPair.first, rightPair.first) + 1;
+
+    if (abs(leftPair.first - rightPair.first) <= 1 && leftPair.second && rightPair.second) {
+        return make_pair(currentHeight, true);
+    }
+
+    return make_pair(currentHeight, false);
+}
+
 int main(void) {
     // leaf* root = buildTree();
 
@@ -110,8 +127,8 @@ int main(void) {
 	root->right->right = new leaf(6);
 	root->left->right->left = new leaf(7);
 	root->left->right->right = new leaf(8);
-	root->left->right->right->left = new leaf(9);
-	root->left->right->right->right = new leaf(10);
+	// root->left->right->right->left = new leaf(9);
+	// root->left->right->right->right = new leaf(10);
 
     showTree(root);
     cout << endl;
@@ -120,6 +137,10 @@ int main(void) {
 
     pair<int, int> HD = diameter(root);
     cout << "height: " << HD.first << " Diameter: " << HD.second << endl;
+
+    pair<int, bool> heightBalanceResult = isHeightBalanced(root);
+    cout << "is height balanced: " << ( (heightBalanceResult.second == true) ? "True\n" : "False\n" );
+
 
     return 0;
 }
