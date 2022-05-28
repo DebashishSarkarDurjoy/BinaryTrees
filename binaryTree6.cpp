@@ -1,4 +1,5 @@
 #include <iostream>
+#include <queue>
 using namespace std;
 
 class leaf {
@@ -45,6 +46,35 @@ int height(leaf* node) {
     return max(h1, h2) + 1;
 }
 
+void levelOrderPrint(leaf* root) {
+    queue<leaf*> q;
+    q.push(root);
+    q.push(NULL);
+
+    while (!q.empty()) {
+        leaf* front = q.front();
+        q.pop();
+
+        if (front == NULL) {
+            cout << endl;
+            if (!q.empty()) {
+                q.push(NULL);
+            }
+        }
+        else {
+            cout << front->data << " ";
+            if (front->left != NULL) {
+                q.push(front->left);
+            }
+            if (front->right != NULL) {
+                q.push(front->right);
+            }
+        }
+
+    }
+    return ;
+}
+
 int main(void) {
     // leaf* root = buildTree();
 
@@ -61,6 +91,9 @@ int main(void) {
 	root->left->right->right->right = new leaf(10);
 
     showTree(root);
+    cout << endl;
+
+    levelOrderPrint(root);
 
     return 0;
 }
