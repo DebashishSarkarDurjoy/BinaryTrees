@@ -75,6 +75,29 @@ void levelOrderPrint(leaf* root) {
     return ;
 }
 
+pair<int, int> diameter (leaf* node) {
+    pair<int, int> current;
+
+    if (node == NULL) {
+        current.first = 0;
+        current.second = 0;
+        return current;
+    }
+
+    pair<int, int> leftPair = diameter(node->left);
+    pair<int, int> rightPair = diameter(node->right);
+
+    current.first = max(leftPair.first, rightPair.first) + 1; // current height
+
+    int D1 = leftPair.first + rightPair.first;
+    int D2 = leftPair.second;
+    int D3 = leftPair.second;
+
+    current.second = max(D1, max(D2, D3));
+
+    return current;
+}
+
 int main(void) {
     // leaf* root = buildTree();
 
@@ -94,6 +117,9 @@ int main(void) {
     cout << endl;
 
     levelOrderPrint(root);
+
+    pair<int, int> HD = diameter(root);
+    cout << "height: " << HD.first << " Diameter: " << HD.second << endl;
 
     return 0;
 }
