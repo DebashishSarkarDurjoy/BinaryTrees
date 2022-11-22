@@ -73,12 +73,30 @@ void levelOrderPrint(leaf* root) {
     return;
 }
 
+pair<int, bool> heightBalance(leaf* node) {
+    if (node == NULL) return {0, true};
+
+    pair<int, bool> leftHeight = heightBalance(node->left);
+    pair<int, bool> rightHeight = heightBalance(node->right);
+
+    int newHeight = 1 + max(leftHeight.first, rightHeight.first);
+
+    if (abs(leftHeight.first - rightHeight.first) <= 1 && leftHeight.second && rightHeight.second) {
+        return {newHeight, true};
+    }
+    else return {newHeight, false};
+}
+
 int main(void) {
     leaf* root = buildTree();
 
     showTree(root);
     cout << "Height: " << height(root) << endl;
     levelOrderPrint(root);
+
+    pair<int, bool> p = heightBalance(root);
+    if (p.second) cout << "Height Balanced" << endl;
+    else cout << "Height not balanced" << endl;
 
     return 0;
 }
